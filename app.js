@@ -18,8 +18,8 @@ var commentRoutes = require("./routes/comments"),
     
 //APP CONFIG
 //seedDB();
-mongoose.connect(process.env.DATABASEURL, { useNewUrlParser: true }); //Local DB
-//mongoose.connect("mongodb://mlycode:password123@ds123852.mlab.com:23852/yelpcampmly", { useNewUrlParser: true }); //MLab hosted DB
+var url = process.env.DATABASEURL || "mongodb://localhost:27017/yelp_camp";
+mongoose.connect(url, { useNewUrlParser: true });
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
