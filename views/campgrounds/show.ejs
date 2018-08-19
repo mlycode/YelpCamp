@@ -1,0 +1,53 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="lead">YelpCamp</p>
+            <div class="list-group">
+                <li class="list-group-item">Info 1</li>
+                <li class="list-group-item">Info 2</li>
+                <li class="list-group-item">Info 3</li>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card mb-3">
+              <img class="card-img-top img-fluid" src="<%= campground.image %>" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title d-flex"><a href="#"><%= campground.name %></a> <span class="ml-auto my-auto">£<%=campground.price%>/night</span></h5>
+                <p class="card-text"><%=campground.description%></p>
+                <p class="card-text"><small class="text-muted">Submitted by <%= campground.author.username %> </small></p>
+                <% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+                    <div class="d-flex">
+                      <a href="/campgrounds/<%= campground._id %>/edit" class="btn btn-warning btn-sm">Edit</a>
+                      <form action="/campgrounds/<%= campground._id %>?_method=delete" method="POST">
+                        <button class="btn btn-danger ml-2 btn-sm">Delete!</button>
+                      </form>
+                    </div>
+                <% } %>
+              </div>
+            </div>
+            <div class="card border-light mb-3">
+              <div class="card-header d-flex py-4"><a class="btn btn-success ml-auto my-auto" href="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a></div>
+              <% campground.comments.forEach(function(comment){ %>
+                  <div class="card-body">
+                    <h6 class="card-title d-flex"><%= comment.author.username %><span class="ml-auto my-auto text-muted">10 days ago</span></h6>
+                    <p class="card-text"><%= comment.text %></p>
+                    <% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+                      <div class="d-flex">
+                        <a class="btn btn-sm btn-warning" href="/campgrounds/<%= campground._id %>/comments/<%=comment._id%>/edit">Edit</a>
+                        <form action="/campgrounds/<%= campground._id %>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                          <button class="btn btn-sm btn-danger ml-2">Delete</button>
+                        </form>
+                      </div>
+                    <% } %>
+                  </div>
+                  <hr>
+              <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<% include ../partials/footer %>
